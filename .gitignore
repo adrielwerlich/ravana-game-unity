@@ -41,4 +41,26 @@ ehthumbs.db
 *.glb
 
 .history
-*.log
+Assets\GlbModels\hindu_temple.zip
+Assets\GlbModels\hindu_temple\hindu_temple.blend
+Assets\GlbModels\hindu_temple\hindu_temple.glb
+Assets\GlbModels\hindu_temple\scene.bin
+Assets\Project\Audio\Free Pack\Easy Going Medieval Tavern - Loop.wav
+Assets\Project\Audio\Free Pack\Forest 6 - Ice Forest.wav
+Builds\WebGL\1\Build\1.data
+Builds\WebGL\2\Build\2.data
+Library\ArtifactDB
+Library\Artifacts\92\92b2d04fd31e17c30073895becf2b4b3
+Library\Artifacts\a1\a1ebfc8d962b51dad4d06da0e1f20b35
+Library\Artifacts\cf\cfdc1b41ace54e4f88b932f3ee1b01f8
+Library\Artifacts\f3\f3f461824be79736062d4cc53387c532
+Library\Bee\artifacts\WebGL\webgl.data
+Library\Bee\artifacts\WebGL\GameAssembly\release_WebGL_wasm\GameAssembly.a
+Library\Bee\artifacts\WebGL\il2cppOutput\build\GameAssembly.a
+Library\PackageCache\com.unity.burst@1.8.12\.Runtime\burst-llvm-16.dll
+Library\PackageCache\com.unity.burst@1.8.12\.Runtime\libburst-llvm-10.dylib
+Library\PackageCache\com.unity.burst@1.8.12\.Runtime\libburst-llvm-16.dylib
+Library\PackageCache\com.unity.burst@1.8.12\.Runtime\libburst-llvm-16.so
+Library\PackageCache\com.unity.burst@1.8.12\.Runtime\hostmac\dsymutil
+Assets/Project/Audio/Free Pack/Easy Going Medieval Tavern - Loop.wav
+Assets/Project/Audio/Free Pack/Forest 6 - Ice Forest.wav
