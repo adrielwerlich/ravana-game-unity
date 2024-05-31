@@ -4,7 +4,7 @@ using Microlight.MicroBar;
 public class HealthAndStrengthController : MonoBehaviour
 {
     [SerializeField] private MicroBar strengthBarController;
-    private float strength = 2f;
+    [SerializeField] private float strength = 100f;
 
     public float Strength
     {
@@ -13,6 +13,7 @@ public class HealthAndStrengthController : MonoBehaviour
     }
     void Start()
     {
+        strengthBarController = GameObject.Find("StrengthBar_MicroBar").GetComponent<MicroBar>();
         strengthBarController.Initialize(strength);
     }
 

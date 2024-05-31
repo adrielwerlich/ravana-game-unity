@@ -49,7 +49,7 @@ public class SkeletonController : MonoBehaviour
         textData.hideFlags = HideFlags.None;
 
     }
-    
+
     void Update()
     {
         float distance = Vector3.Distance(player.position, transform.position);
@@ -116,28 +116,40 @@ public class SkeletonController : MonoBehaviour
     [SerializeField] private DynamicTextData textData;
 
     [SerializeField] private AudioClip hitSound;
+    [SerializeField] private AudioClip punchSound;
     [SerializeField] private AudioSource audioSource;
 
     // private bool beingHit = false;
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("SkeletonController OnTriggerEnter: " + other.name);
+        // if (other.gameObject.name.Contains("Spell"))
+        // {
+        //     Debug.Log("SkeletonController OnTriggerEnter: " + other.name);
+        // }
         if ((other.gameObject.name == "RavanaSword" && ravanaPlayerController.isSwordAttack) || other.gameObject.name.Contains("Spell") && !underAttack)
         {
             GetHit(other.transform);
         }
     }
 
-    private void GetHit(Transform other)
+    public void GetHit(Transform other, bool noWeaponAttack = false)
     {
         animator.SetBool("getHit", true);
         animator.SetBool("move", false);
         animator.SetBool("attack", true);
         underAttack = true;
 
-        audioSource.PlayOneShot(hitSound);
+        if (noWeaponAttack)
+        {
+            audioSource.PlayOneShot(punchSound);
+        }
+        else
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
+
         Vector3 hitDirection = GetHitDirection(other.transform);
-        ApplyHitEffect(hitDirection);
+        ApplyHitEffect(hitDirection, noWeaponAttack);
 
 
         var destination = this.transform.position + new Vector3(0, 2, 0);
@@ -214,7 +226,7 @@ public class SkeletonController : MonoBehaviour
 
     [SerializeField] private float rangeMin = 10;
     [SerializeField] private float rangeMax = 50;
-    private void ApplyHitEffect(Vector3 hitDirection)
+    private void ApplyHitEffect(Vector3 hitDirection, bool noWeaponAttack = false)
     {
         Vector3 position = new Vector3(
                             this.transform.position.x,
@@ -238,7 +250,14 @@ public class SkeletonController : MonoBehaviour
         Destroy(explosion, 1f);
         if (rb != null)
         {
-            float forceMultiplier = Random.Range(rangeMin, rangeMax);
+            float minForce = rangeMin;
+            float maxForce = rangeMax;
+            if (noWeaponAttack)
+            {
+                maxForce /= UnityEngine.Random.Range(2, 5);
+            }
+
+            float forceMultiplier = Random.Range(rangeMin, maxForce);
             float startForce = 0f;
             float endForce = forceMultiplier;
             float duration = .4f; // Duration of the animation in seconds

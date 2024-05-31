@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SpecialMagicAttack",
+                    "type": "Button",
+                    "id": "d3719208-b666-45e7-bdec-7932eb11210b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MissionMessageConfirm",
                     "type": "Button",
                     "id": "9796f9aa-a43c-4178-b986-e684f9dd3365",
@@ -369,6 +378,28 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "ToggleHoldWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c4cc534a-e3e1-4338-90aa-1e39cdd8d94c",
+                    "path": "<Keyboard>/z",
+                    "interactions": "Hold(duration=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialMagicAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf572923-0a79-4eec-bba3-a9e509947be5",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Hold(duration=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialMagicAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

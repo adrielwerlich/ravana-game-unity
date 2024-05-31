@@ -82,6 +82,15 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""SpecialMagicAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3719208-b666-45e7-bdec-7932eb11210b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MissionMessageConfirm"",
                     ""type"": ""Button"",
                     ""id"": ""9796f9aa-a43c-4178-b986-e684f9dd3365"",
@@ -393,6 +402,28 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleHoldWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4cc534a-e3e1-4338-90aa-1e39cdd8d94c"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": ""Hold(duration=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialMagicAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf572923-0a79-4eec-bba3-a9e509947be5"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Hold(duration=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialMagicAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -455,6 +486,7 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
         m_Ravana_Sprint = m_Ravana.FindAction("Sprint", throwIfNotFound: true);
         m_Ravana_AttackDown = m_Ravana.FindAction("AttackDown", throwIfNotFound: true);
         m_Ravana_MagicAttack = m_Ravana.FindAction("MagicAttack", throwIfNotFound: true);
+        m_Ravana_SpecialMagicAttack = m_Ravana.FindAction("SpecialMagicAttack", throwIfNotFound: true);
         m_Ravana_MissionMessageConfirm = m_Ravana.FindAction("MissionMessageConfirm", throwIfNotFound: true);
         m_Ravana_Pause = m_Ravana.FindAction("Pause", throwIfNotFound: true);
         m_Ravana_GoToMainMenu = m_Ravana.FindAction("GoToMainMenu", throwIfNotFound: true);
@@ -526,6 +558,7 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Ravana_Sprint;
     private readonly InputAction m_Ravana_AttackDown;
     private readonly InputAction m_Ravana_MagicAttack;
+    private readonly InputAction m_Ravana_SpecialMagicAttack;
     private readonly InputAction m_Ravana_MissionMessageConfirm;
     private readonly InputAction m_Ravana_Pause;
     private readonly InputAction m_Ravana_GoToMainMenu;
@@ -540,6 +573,7 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Ravana_Sprint;
         public InputAction @AttackDown => m_Wrapper.m_Ravana_AttackDown;
         public InputAction @MagicAttack => m_Wrapper.m_Ravana_MagicAttack;
+        public InputAction @SpecialMagicAttack => m_Wrapper.m_Ravana_SpecialMagicAttack;
         public InputAction @MissionMessageConfirm => m_Wrapper.m_Ravana_MissionMessageConfirm;
         public InputAction @Pause => m_Wrapper.m_Ravana_Pause;
         public InputAction @GoToMainMenu => m_Wrapper.m_Ravana_GoToMainMenu;
@@ -571,6 +605,9 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
             @MagicAttack.started += instance.OnMagicAttack;
             @MagicAttack.performed += instance.OnMagicAttack;
             @MagicAttack.canceled += instance.OnMagicAttack;
+            @SpecialMagicAttack.started += instance.OnSpecialMagicAttack;
+            @SpecialMagicAttack.performed += instance.OnSpecialMagicAttack;
+            @SpecialMagicAttack.canceled += instance.OnSpecialMagicAttack;
             @MissionMessageConfirm.started += instance.OnMissionMessageConfirm;
             @MissionMessageConfirm.performed += instance.OnMissionMessageConfirm;
             @MissionMessageConfirm.canceled += instance.OnMissionMessageConfirm;
@@ -605,6 +642,9 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
             @MagicAttack.started -= instance.OnMagicAttack;
             @MagicAttack.performed -= instance.OnMagicAttack;
             @MagicAttack.canceled -= instance.OnMagicAttack;
+            @SpecialMagicAttack.started -= instance.OnSpecialMagicAttack;
+            @SpecialMagicAttack.performed -= instance.OnSpecialMagicAttack;
+            @SpecialMagicAttack.canceled -= instance.OnSpecialMagicAttack;
             @MissionMessageConfirm.started -= instance.OnMissionMessageConfirm;
             @MissionMessageConfirm.performed -= instance.OnMissionMessageConfirm;
             @MissionMessageConfirm.canceled -= instance.OnMissionMessageConfirm;
@@ -678,6 +718,7 @@ public partial class @RavanaInputActions: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnAttackDown(InputAction.CallbackContext context);
         void OnMagicAttack(InputAction.CallbackContext context);
+        void OnSpecialMagicAttack(InputAction.CallbackContext context);
         void OnMissionMessageConfirm(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnGoToMainMenu(InputAction.CallbackContext context);

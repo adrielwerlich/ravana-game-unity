@@ -9,6 +9,8 @@ public class LookAtSun : MonoBehaviour
 
     void Update()
     {
-        this.transform.forward = -sun.transform.forward;        
+        if (sun != null) {
+            this.transform.forward = -sun.transform.forward;        
+        }
     }
 }

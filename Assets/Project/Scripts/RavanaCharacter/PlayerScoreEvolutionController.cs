@@ -24,9 +24,14 @@ public class PlayerScoreEvolutionController : MonoBehaviour
 
     void Start()
     {
+        scoreBar = GameObject.Find("ScoreBar_MicroBar").GetComponent<MicroBar>();
         scoreBar.Initialize(100f);
         scoreBar.UpdateHealthBar(score);
+
+        scoreText = GameObject.Find("ScoreNumber_Text").GetComponent<TextMeshProUGUI>();
         scoreText.text = score.ToString();
+
+        levelController = GameObject.Find("LevelController").GetComponent<LevelController>();
     }
 
     // Update is called once per frame

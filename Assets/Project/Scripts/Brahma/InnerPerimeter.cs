@@ -140,7 +140,7 @@ public class InnerPerimeter : MonoBehaviour
         GoBackToMountMeru?.Invoke();
         //ravanaPlayerController.TeleportTo(backToMountMeruPosition);
         mountMeruPortal.SetActive(false);
-        ravanaPlayerController.LockCameraPosition = false;
+        ravanaPlayerController.playerControllerPublicProperties.LockCameraPosition = false;
     }
 
     private void ResetCamera()

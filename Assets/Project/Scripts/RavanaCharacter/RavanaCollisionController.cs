@@ -21,12 +21,18 @@ public class RavanaCollisionController : MonoBehaviour
 
     private RavanaPlayerController ravanaPlayerController;
 
-    [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject deathExplosionEffect;
     void Start()
     {
         animator = GetComponent<Animator>();
         ravanaPlayerController = GetComponent<RavanaPlayerController>();
         healthAndStrengthController = GetComponent<HealthAndStrengthController>();
+
+        audioSource = GameObject.Find("MainAudioSource").GetComponent<AudioSource>();
+        gotHurtAudioClip = Resources.Load<AudioClip>("Audio/Male_Hurt_04");
+        deadSound = Resources.Load<AudioClip>("Audio/Male_Nooo_02");
+
+        deathExplosionEffect = Resources.Load<GameObject>("Prefabs/PlayerDieExplosionEffect");
 
     }
 
@@ -145,7 +151,7 @@ public class RavanaCollisionController : MonoBehaviour
         this.gameObject.transform.DOScale(0, 1f);
         
         this.gameObject.transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
-        var go = Instantiate(explosion, transform.position, Quaternion.identity);
+        var go = Instantiate(deathExplosionEffect, transform.position, Quaternion.identity);
         StartCoroutine(DeactivateAfterDelay());
 
         Destroy(go, 2);

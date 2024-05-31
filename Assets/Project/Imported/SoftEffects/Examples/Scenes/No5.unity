@@ -919,12 +919,6 @@ Texture2D:
     offset: 0
     size: 0
     path: 
---- !u!224 &1129567847 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-    type: 3}
-  m_PrefabInstance: {fileID: 7582101352237646567}
-  m_PrefabAsset: {fileID: 0}
 --- !u!28 &1132330266
 Texture2D:
   m_ObjectHideFlags: 0
@@ -1458,7 +1452,7 @@ RectTransform:
   m_Children:
   - {fileID: 920888489}
   - {fileID: 1320724949}
-  - {fileID: 1129567847}
+  - {fileID: 4248353568217510158}
   - {fileID: 364256159}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1553,7 +1547,13 @@ RenderTexture:
   m_Dimension: 2
   m_VolumeDepth: 1
   m_ShadowSamplingMode: 2
---- !u!1001 &7582101352237646567
+--- !u!224 &4248353568217510158 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
+    type: 3}
+  m_PrefabInstance: {fileID: 4809314204483324275}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4809314204483324275
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1561,292 +1561,292 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1821590215}
     m_Modifications:
-    - target: {fileID: 3080501428806762581, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 802884493776711971, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_Name
       value: Popup
       objectReference: {fileID: 0}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: shadowOptions.noiseTexture
-      value: 
-      objectReference: {fileID: 1026789052}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: bevelOptions.r_shadowTexture
-      value: 
-      objectReference: {fileID: 1342216410}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: shadowOptions.contourTexture
-      value: 
-      objectReference: {fileID: 1132330266}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: innerGlowOptions.contourTexture
-      value: 
-      objectReference: {fileID: 1220247740}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.fgOptions.r_mainTexture
-      value: 
-      objectReference: {fileID: 2104579674}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.igOptions.r_mainTexture
-      value: 
-      objectReference: {fileID: 681152792}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.isOptions.r_mainTexture
-      value: 
-      objectReference: {fileID: 1320748262}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.ogOptions.r_mainTexture
-      value: 
-      objectReference: {fileID: 540353486}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.bevOptions.r_mainTexture
-      value: 
-      objectReference: {fileID: 822123436}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.igOptions.contourTexture
-      value: 
-      objectReference: {fileID: 1220247740}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.strOptions.r_mainTexture
-      value: 
-      objectReference: {fileID: 830698023}
-    - target: {fileID: 3483750693381580141, guid: c409ba9cc771f6b42a5ec6c83d751f15,
-        type: 3}
-      propertyPath: faceOptions.bevOptions.r_shadowTexture
-      value: 
-      objectReference: {fileID: 1342216410}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_AnchorMin.x
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_AnchorMin.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 767
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 883
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -299
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6038243041280291817, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 4997019043612872721, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: shadowOptions.noiseTexture
       value: 
       objectReference: {fileID: 1026789052}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: bevelOptions.r_shadowTexture
+      value: 
+      objectReference: {fileID: 1342216410}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: shadowOptions.contourTexture
+      value: 
+      objectReference: {fileID: 1132330266}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: innerGlowOptions.contourTexture
+      value: 
+      objectReference: {fileID: 1220247740}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.fgOptions.r_mainTexture
+      value: 
+      objectReference: {fileID: 2104579674}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.igOptions.r_mainTexture
+      value: 
+      objectReference: {fileID: 681152792}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.isOptions.r_mainTexture
+      value: 
+      objectReference: {fileID: 1320748262}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.ogOptions.r_mainTexture
+      value: 
+      objectReference: {fileID: 540353486}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.bevOptions.r_mainTexture
+      value: 
+      objectReference: {fileID: 822123436}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.igOptions.contourTexture
+      value: 
+      objectReference: {fileID: 1220247740}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.strOptions.r_mainTexture
+      value: 
+      objectReference: {fileID: 830698023}
+    - target: {fileID: 5197162412370989165, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: faceOptions.bevOptions.r_shadowTexture
+      value: 
+      objectReference: {fileID: 1342216410}
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
+        type: 3}
+      propertyPath: shadowOptions.noiseTexture
+      value: 
+      objectReference: {fileID: 1026789052}
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: bevelOptions.r_shadowTexture
       value: 
       objectReference: {fileID: 861904460}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: shadowOptions.contourTexture
       value: 
       objectReference: {fileID: 2014459018}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: innerGlowOptions.contourTexture
       value: 
       objectReference: {fileID: 1220247740}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceGradientOptions.r_mainTexture
       value: 
       objectReference: {fileID: 421247543}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.fgOptions.r_mainTexture
       value: 
       objectReference: {fileID: 421247543}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.igOptions.r_mainTexture
       value: 
       objectReference: {fileID: 555141070}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.isOptions.r_mainTexture
       value: 
       objectReference: {fileID: 1719102013}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.ogOptions.r_mainTexture
       value: 
       objectReference: {fileID: 834352951}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.bevOptions.r_mainTexture
       value: 
       objectReference: {fileID: 1520653124}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.igOptions.contourTexture
       value: 
       objectReference: {fileID: 1220247740}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.strOptions.r_mainTexture
       value: 
       objectReference: {fileID: 481641124}
-    - target: {fileID: 8627395232919265813, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 5658497982930120326, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.bevOptions.r_shadowTexture
       value: 
       objectReference: {fileID: 861904460}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: shadowOptions.noiseTexture
       value: 
       objectReference: {fileID: 1026789052}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: bevelOptions.r_shadowTexture
       value: 
       objectReference: {fileID: 861904460}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: shadowOptions.contourTexture
       value: 
       objectReference: {fileID: 379935805}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: innerGlowOptions.contourTexture
       value: 
       objectReference: {fileID: 1220247740}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.fgOptions.r_mainTexture
       value: 
       objectReference: {fileID: 1209074014}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.igOptions.r_mainTexture
       value: 
       objectReference: {fileID: 555141070}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.isOptions.r_mainTexture
       value: 
       objectReference: {fileID: 1803974839}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.ogOptions.r_mainTexture
       value: 
       objectReference: {fileID: 1355998492}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.bevOptions.r_mainTexture
       value: 
       objectReference: {fileID: 1520653124}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.igOptions.contourTexture
       value: 
       objectReference: {fileID: 1220247740}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.strOptions.r_mainTexture
       value: 
       objectReference: {fileID: 924798991}
-    - target: {fileID: 8685591447627407669, guid: c409ba9cc771f6b42a5ec6c83d751f15,
+    - target: {fileID: 6267661488535670704, guid: f983dc5b682b7d148a6f390470ea7e20,
         type: 3}
       propertyPath: faceOptions.bevOptions.r_shadowTexture
       value: 
@@ -1855,7 +1855,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c409ba9cc771f6b42a5ec6c83d751f15, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: f983dc5b682b7d148a6f390470ea7e20, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

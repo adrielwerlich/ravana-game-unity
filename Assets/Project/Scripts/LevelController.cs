@@ -37,21 +37,23 @@ public class LevelController : MonoBehaviour
         playerController = GameObject.Find("RavanaPlayer").GetComponent<RavanaPlayerController>();
         // LordBrahma.gameObject.SetActive(false);
 
-        userMessageButton = userMessages.transform.FindChildByRecursive("ButtonStart").GetComponent<Button>();
-        buttonText = userMessageButton.transform.Find("ButtonText").GetComponent<Text>();
-
+        userMessages = GameObject.Find("UserMessages"); 
         missionsTextPanel = userMessages.transform.Find("MissionsTextPanel").gameObject;
 
-        messageTitle = userMessages.transform.FindChildByRecursive("EditorTitle").GetComponent<Text>();
-        messageBody = userMessages.transform.FindChildByRecursive("EditorText").GetComponent<Text>();
+        userMessageButton = missionsTextPanel.transform.FindChildByRecursive("ButtonStart").GetComponent<Button>();
+        buttonText = userMessageButton.transform.Find("ButtonText").GetComponent<Text>();
 
-        //userMessageButton.onClick.AddListener(OnUserMessageButtonClicked);
+
+        messageTitle = missionsTextPanel.transform.FindChildByRecursive("EditorTitle").GetComponent<Text>();
+        messageBody = missionsTextPanel.transform.FindChildByRecursive("EditorText").GetComponent<Text>();
+
+        userMessageButton.onClick.AddListener(HideMessagePanel);
 
         // SetStartMissionText
         SetMissionText(
             "Your Mission",
             "You need to achieve level hundred to achieve next mission. Go destroying all your enemies to raise your level",
-            "Press Enter to Start",
+            PRESS_ENTER,
             52
         );
 
@@ -66,8 +68,8 @@ public class LevelController : MonoBehaviour
         MountMeruUserMessage.ShowKillAllMonstersMessage += OnShowKillAllMonstersMessage;
         RavanaCollisionController.PlayerIsDead += ShowDeadMessage;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
     }
 
     private void OnDisable()
@@ -110,7 +112,7 @@ public class LevelController : MonoBehaviour
                 SetMissionText(
                     "Find Brahma",
                     "He will give you power to be invencible. Follow the arrow to find him. Jump to climb the mountains. Now you can press Z or right click to throw spell.",
-                    "Let's go. Press Enter",
+                    PRESS_ENTER,
                     40
                 );
                 break;
@@ -149,7 +151,7 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private void HideMessagePanel()
+    public void HideMessagePanel()
     {
         missionsTextPanel.SetActive(false);
     }

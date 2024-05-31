@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Reflection;
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -31,73 +33,8 @@ namespace RavanaGame
 #endif
     public class RavanaPlayerController : MonoBehaviour
     {
-        [Header("Player")]
-        [Tooltip("Move speed of the character in m/s")]
-        public float MoveSpeed = 2.0f;
 
-        [Tooltip("Sprint speed of the character in m/s")]
-        public float SprintSpeed = 5.335f;
-
-        [Tooltip("How fast the character turns to face movement direction")]
-        [Range(0.0f, 0.3f)]
-        public float RotationSmoothTime = 0.12f;
-
-        [Tooltip("Acceleration and deceleration")]
-        public float SpeedChangeRate = 10.0f;
-
-        [SerializeField] private AudioClip attackAudioClip;
-
-        public AudioClip LandingAudioClip;
-        public AudioClip[] FootstepAudioClips;
-        [Range(0, 1)] public float FootstepAudioVolume = 0.5f;
-
-        [Space(10)]
-        [Tooltip("The height the player can jump")]
-        public float JumpHeight = 1.2f;
-
-        [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
-        public float Gravity = -15.0f;
-
-        [Space(10)]
-        [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
-        public float JumpTimeout = 0.50f;
-
-        [Space(10)]
-        [Tooltip("Time required to pass before being able to attack again. Set to 0f to instantly attack again")]
-        public float AttackTimeout = .5f;
-        public float MagicAttackTimeout = .8f;
-
-        [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
-        public float FallTimeout = 0.15f;
-
-        [Header("Player Grounded")]
-        [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
-        public bool Grounded = true;
-
-        [Tooltip("Useful for rough ground")]
-        public float GroundedOffset = -0.14f;
-
-        [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-        public float GroundedRadius = 0.28f;
-
-        [Tooltip("What layers the character uses as ground")]
-        public LayerMask GroundLayers;
-
-        [Header("Cinemachine")]
-        [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
-        public GameObject CinemachineCameraTarget;
-
-        [Tooltip("How far in degrees can you move the camera up")]
-        public float TopClamp = 70.0f;
-
-        [Tooltip("How far in degrees can you move the camera down")]
-        public float BottomClamp = -30.0f;
-
-        [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
-        public float CameraAngleOverride = 0.0f;
-
-        [Tooltip("For locking the camera position on all axis")]
-        public bool LockCameraPosition = false;
+        public PlayerControllerPublicProperties playerControllerPublicProperties;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -110,6 +47,8 @@ namespace RavanaGame
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+
+
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -126,23 +65,26 @@ namespace RavanaGame
         private int _animIDAttack;
         private int _animIDAttackDown;
 
-        [SerializeField] private AudioSource audioSource;
+        private AuraController auraController;
 
         public bool canMove = true;
         public bool noWeaponAttack = false;
 
-        [SerializeField] private GameObject greenSpell;
-        [SerializeField] private GameObject blueSpell;
-        [SerializeField] private GameObject[] spells;
+
+        [SerializeField] private AudioClip attackAudioClip;
+        [SerializeField] private bool drawGizmos = false;
+        [SerializeField] private AudioSource audioSource;
+
         [SerializeField] private GameObject swordEquiped;
         [SerializeField] private GameObject swordUnequiped;
 
-        [SerializeField] private AudioClip magicSpellAudioClip;
 
-        private LevelController levelController;
+
 
         private PlayerScoreEvolutionController playerScoreController;
 
+        [SerializeField]
+        private float maxDistance = 3.5f;
 
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput _playerInput;
@@ -205,21 +147,21 @@ namespace RavanaGame
             }
 
 
-            ravanaInputActions = new RavanaInputActions();
+            ravanaInputActions = InputActionsSingleton.Instance;
 
             ravanaInputActions.Ravana.MissionMessageConfirm.performed += ctx =>
             {
                 EnterKeyPressed?.Invoke();
             };
 
-            ravanaInputActions.Ravana.MagicAttack.performed += ctx => MagicAttack();
+
 
             ravanaInputActions.Ravana.Pause.performed += ctx => TogglePauseGame();
             ravanaInputActions.Ravana.GoToMainMenu.performed += ctx => GoToMainMenu();
             ravanaInputActions.Ravana.ToggleHoldWeapon.performed += ctx => ToggleHoldWeapon();
 
-
-
+            audioSource = GameObject.Find("MainAudioSource").GetComponent<AudioSource>();
+            audioSource.volume = 0.2f;
             swordUnequiped.SetActive(false);
         }
 
@@ -230,7 +172,6 @@ namespace RavanaGame
 
         private void OnDisable()
         {
-            ravanaInputActions.Ravana.MagicAttack.performed -= ctx => MagicAttack();
             ravanaInputActions.Ravana.Pause.performed -= ctx => TogglePauseGame();
             ravanaInputActions.Ravana.GoToMainMenu.performed -= ctx => GoToMainMenu();
             ravanaInputActions.Ravana.ToggleHoldWeapon.performed -= ctx => ToggleHoldWeapon();
@@ -302,7 +243,8 @@ namespace RavanaGame
 
         private void Start()
         {
-            _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
+            playerControllerPublicProperties.CinemachineCameraTarget = GameObject.Find("PlayerCameraRoot");
+            _cinemachineTargetYaw = playerControllerPublicProperties.CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
             _animator = GetComponent<Animator>(); //TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
@@ -316,20 +258,32 @@ namespace RavanaGame
             AssignAnimationIDs();
 
             // reset our timeouts on start
-            _jumpTimeoutDelta = JumpTimeout;
-            _fallTimeoutDelta = FallTimeout;
-            _attackTimeoutDelta = AttackTimeout;
-            _magicAttackTimeoutDelta = MagicAttackTimeout;
+            _jumpTimeoutDelta = playerControllerPublicProperties.JumpTimeout;
+            _fallTimeoutDelta = playerControllerPublicProperties.FallTimeout;
+            _attackTimeoutDelta = playerControllerPublicProperties.AttackTimeout;
+            _magicAttackTimeoutDelta = playerControllerPublicProperties.MagicAttackTimeout;
 
-            levelController = GameObject.Find("LevelController").GetComponent<LevelController>();
 
-            playerScoreController = this.gameObject.GetComponent<PlayerScoreEvolutionController>();
+            auraController = this.transform.Find("AuraMesh").GetComponent<AuraController>();
 
+            AudioClip[] footstepAudioClips = new AudioClip[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                string fileName = $"Audio/Footsteps/Player_Footstep_{i + 1:D2}";
+                footstepAudioClips[i] = Resources.Load<AudioClip>(fileName);
+            }
+
+            playerControllerPublicProperties.FootstepAudioClips = footstepAudioClips;
         }
 
         private void Update()
         {
             // _animator = TryGetComponent(out _animator);
+
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+
+            Debug.DrawRay(transform.position, forward * maxDistance, Color.red);
 
             if (canMove)
             {
@@ -344,64 +298,51 @@ namespace RavanaGame
 
         }
 
-        private bool isMagicAttack = false;
-
-        private void MagicAttack()
+        void OnDrawGizmos()
         {
-            if (levelController.currentLevel > 1)
+            if (!drawGizmos) return;
+
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+            Gizmos.color = Color.red;
+            // Gizmos.DrawRay(transform.position, forward * maxDistance);
+            float offset = 1.0f; // Offset from the ground
+            float thickness = 0.1f; // Thickness of the line
+
+            Vector3 startPosition = transform.position + new Vector3(0, offset, 0);
+
+            // Draw the main line
+            Gizmos.DrawRay(startPosition, forward * maxDistance);
+
+            // Draw additional lines to simulate thickness
+            for (float i = -thickness; i <= thickness; i += thickness / 2)
             {
-                isMagicAttack = true;
+                Gizmos.DrawRay(startPosition + new Vector3(i, 0, 0), forward * maxDistance);
+                Gizmos.DrawRay(startPosition + new Vector3(0, 0, i), forward * maxDistance);
             }
-            //Debug.Log("RavanaPlayerController MagicAttack ");
+
+            int numberOfLines = 40; // Number of lines to draw for the cone
+
+            // Calculate the rotation for each line
+            Quaternion rotationStep = Quaternion.AngleAxis(60f / (numberOfLines - 1), transform.up);
+
+            // Start with a direction rotated 45 degrees to the left
+            Vector3 direction = Quaternion.AngleAxis(-30f, transform.up) * transform.forward;
+
+            // Draw the lines
+            for (int i = 0; i < numberOfLines; i++)
+            {
+                Gizmos.DrawLine(transform.position + new Vector3(0, offset, 0), transform.position + direction * maxDistance);
+                direction = rotationStep * direction;
+            }
         }
 
+
+
         public bool isSwordAttack = false;
-        private bool magicAnimationOn = false;
+
         private void Attack()
         {
 
-            if (isMagicAttack && !magicAnimationOn)
-            {
-                if (_animator)
-                {
-                    _animator.SetBool("MagicAttack", true);
-                    //isMagicAttack = true;
-                    magicAnimationOn = true;
-                    audioSource.clip = magicSpellAudioClip;
-                    audioSource.pitch = 2.0f;
-                    audioSource.Play();
-
-                    // GameObject spellInstance = Instantiate(spells[1], transform.position + transform.forward + Vector3.up, transform.rotation);
-                    GameObject spellInstance = Instantiate(spells[Random.Range(0, spells.Length)], transform.position + transform.forward + Vector3.up, transform.rotation);
-                    // GameObject spellInstance = Instantiate(greenSpell, transform.position + transform.forward + Vector3.up, transform.rotation);
-                    spellInstance.gameObject.SetActive(true);
-
-                    playerScoreController.ReduceScore(Random.Range(1, 3));
-                }
-            }
-
-            if (isMagicAttack)
-            {
-                if (_magicAttackTimeoutDelta >= 0.0f)
-                {
-                    _magicAttackTimeoutDelta -= Time.deltaTime;
-                }
-                else
-                {
-                    // reset the attack timeout timer
-                    _magicAttackTimeoutDelta = MagicAttackTimeout;
-
-                    // if we are not attacking, do not play attack animation
-                    //_input.magicAttack = false;
-                    isMagicAttack = false;
-                    magicAnimationOn = false;
-                    // update animator if using character
-                    if (_animator)
-                    {
-                        _animator.SetBool("MagicAttack", false);
-                    }
-                }
-            }
 
             if (_input.attackDown && !isSwordAttack)
             {
@@ -418,6 +359,7 @@ namespace RavanaGame
 
                         canMove = false;
                         noWeaponAttack = true;
+                        CheckIfEnemyOnFront();
                         ChangeAnimationState(randomAnimation.ToString());
                         _input.attackDown = false;
                     }
@@ -440,7 +382,7 @@ namespace RavanaGame
                 else
                 {
                     // reset the attack timeout timer
-                    _attackTimeoutDelta = AttackTimeout;
+                    _attackTimeoutDelta = playerControllerPublicProperties.AttackTimeout;
 
                     // if we are not attacking, do not play attack animation
                     _input.attackDown = false;
@@ -450,6 +392,51 @@ namespace RavanaGame
                     {
                         // _animator.SetBool(_animIDAttackDown, false);
                         _animator.SetBool("AttackDown", false);
+
+                    }
+                }
+            }
+        }
+
+
+        private void CheckIfEnemyOnFront()
+        {
+            // Define the forward direction and the maximum distance of the raycast
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+
+            // Debug.DrawRay(transform.position, forward * maxDistance, Color.red);
+
+            // Perform the raycast
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, forward, out hit, maxDistance))
+            {
+                // Check if the hit GameObject has the "Enemy" tag and is within a 45-degree field of view
+                if (hit.collider.gameObject.name.Contains("Skeleton") && Vector3.Angle(transform.forward, hit.transform.position - transform.position) < 45f)
+                {
+
+                    var skeletonAvatar = hit.collider.gameObject.GetComponent<SkeletonSword>();
+
+                    // Check if the SkeletonAvatar GameObject was found
+                    if (skeletonAvatar != null)
+                    {
+                        Type skeletonControllerType = skeletonAvatar.skeletonController.GetType();
+
+                        // Get the MethodInfo object for the GetHit method
+                        MethodInfo getHitMethod = skeletonControllerType.GetMethod("GetHit");
+
+                        // Check if the GetHit method exists
+                        if (getHitMethod != null)
+                        {
+                            Debug.Log("The GetHit method exists in the skeletonController.");
+                            getHitMethod.Invoke(skeletonAvatar.skeletonController, new object[] { this.transform, true });
+                        }
+                        else
+                        {
+                            Debug.Log("The GetHit method does not exist in the skeletonController.");
+                        }
+
+                        // Get the SkeletonController component
+                        Debug.Log("Enemy in front!");
 
                     }
                 }
@@ -494,48 +481,55 @@ namespace RavanaGame
         private void GroundedCheck()
         {
             // set sphere position, with offset
-            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
-                transform.position.z);
-            Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
-                QueryTriggerInteraction.Ignore);
+            Vector3 spherePosition = new Vector3(
+                transform.position.x,
+                transform.position.y - playerControllerPublicProperties.GroundedOffset,
+                transform.position.z
+            );
+            playerControllerPublicProperties.Grounded = Physics.CheckSphere(
+                spherePosition,
+                playerControllerPublicProperties.GroundedRadius,
+                playerControllerPublicProperties.GroundLayers,
+                QueryTriggerInteraction.Ignore
+            );
 
             // update animator if using character
             if (_animator)
             {
-                _animator.SetBool(_animIDGrounded, Grounded);
+                _animator.SetBool(_animIDGrounded, playerControllerPublicProperties.Grounded);
             }
 
         }
 
-        private void UpdateCameraRotation(InputAction.CallbackContext context)
-        {
-            Vector2 input = context.ReadValue<Vector2>();
-            //Debug.Log("RavanaPlayerController CameraRotation =>" + input);
+        // private void UpdateCameraRotation(InputAction.CallbackContext context)
+        // {
+        //     Vector2 input = context.ReadValue<Vector2>();
+        //     //Debug.Log("RavanaPlayerController CameraRotation =>" + input);
 
-            if (input.sqrMagnitude >= _threshold && !LockCameraPosition)
-            {
-                //Don't multiply mouse input by Time.deltaTime;
-                float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+        //     if (input.sqrMagnitude >= _threshold && !playerControllerPublicProperties.LockCameraPosition)
+        //     {
+        //         //Don't multiply mouse input by Time.deltaTime;
+        //         float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
-                _cinemachineTargetYaw += input.x * deltaTimeMultiplier;
-                _cinemachineTargetPitch += input.y * deltaTimeMultiplier;
-            }
+        //         _cinemachineTargetYaw += input.x * deltaTimeMultiplier;
+        //         _cinemachineTargetPitch += input.y * deltaTimeMultiplier;
+        //     }
 
-            // clamp our rotations so our values are limited 360 degrees
-            _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+        //     // clamp our rotations so our values are limited 360 degrees
+        //     _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+        //     _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, playerControllerPublicProperties.BottomClamp, playerControllerPublicProperties.TopClamp);
 
-            // Cinemachine will follow this target
-            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
-                               _cinemachineTargetYaw, 0.0f);
-        }
+        //     // Cinemachine will follow this target
+        //     playerControllerPublicProperties.CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + playerControllerPublicProperties.CameraAngleOverride,
+        //                        _cinemachineTargetYaw, 0.0f);
+        // }
 
         private void CameraRotation()
         {
 
 
             // if there is an input and camera position is not fixed
-            if (_input.look.sqrMagnitude >= _threshold && !LockCameraPosition)
+            if (_input.look.sqrMagnitude >= _threshold && !playerControllerPublicProperties.LockCameraPosition)
             {
                 //Don't multiply mouse input by Time.deltaTime;
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
@@ -546,18 +540,18 @@ namespace RavanaGame
 
             // clamp our rotations so our values are limited 360 degrees
             _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
-            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+            _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, playerControllerPublicProperties.BottomClamp, playerControllerPublicProperties.TopClamp);
 
             // Cinemachine will follow this target
-            CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
+            playerControllerPublicProperties.CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + playerControllerPublicProperties.CameraAngleOverride,
                 _cinemachineTargetYaw, 0.0f);
         }
 
         private void Move()
         {
-            if (isMagicAttack || isSwordAttack || _toggleHoldWeapon) return;
+            if (_animator.GetBool("MagicAttack") || isSwordAttack || _toggleHoldWeapon) return;
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed = _input.sprint ? playerControllerPublicProperties.SprintSpeed : playerControllerPublicProperties.MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -578,7 +572,7 @@ namespace RavanaGame
                 // creates curved result rather than a linear one giving a more organic speed change
                 // note T in Lerp is clamped, so we don't need to clamp our speed
                 _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                    Time.deltaTime * SpeedChangeRate);
+                    Time.deltaTime * playerControllerPublicProperties.SpeedChangeRate);
 
                 // round speed to 3 decimal places
                 _speed = Mathf.Round(_speed * 1000f) / 1000f;
@@ -588,7 +582,7 @@ namespace RavanaGame
                 _speed = targetSpeed;
             }
 
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * playerControllerPublicProperties.SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
 
             // normalise input direction
@@ -601,7 +595,7 @@ namespace RavanaGame
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-                    RotationSmoothTime);
+                    playerControllerPublicProperties.RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
@@ -622,86 +616,12 @@ namespace RavanaGame
             }
         }
 
-
-        //private void Move(InputAction.CallbackContext context)
-        //{
-        //    if (isMagicAttack || isSwordAttack) return;
-
-        //        Vector2 inputMove = context.ReadValue<Vector2>();
-
-        //    // set target speed based on move speed, sprint speed and if sprint is pressed
-        //    float targetSpeed = isSprint ? SprintSpeed : MoveSpeed;
-
-        //    // if there is no input, set the target speed to 0
-        //    if (inputMove == Vector2.zero) targetSpeed = 0.0f;
-
-        //    if (inputMove != Vector2.zero)
-        //    {
-        //        _targetRotation = Mathf.Atan2(inputMove.x, inputMove.y) * Mathf.Rad2Deg;
-        //        float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-        //                    RotationSmoothTime);
-
-        //        // rotate to face input direction relative to camera position
-        //        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-        //    }
-
-        //    float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
-
-        //    float speedOffset = 0.1f;
-        //    float inputMagnitude = inputMove.magnitude; // : 1f;
-
-        //    // accelerate or decelerate to target speed
-        //    if (currentHorizontalSpeed < targetSpeed - speedOffset ||
-        //        currentHorizontalSpeed > targetSpeed + speedOffset)
-        //    {
-        //        _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-        //            Time.deltaTime * SpeedChangeRate);
-
-        //        _speed = Mathf.Round(_speed * 1000f) / 1000f;
-        //    }
-        //    else
-        //    {
-        //        _speed = targetSpeed;
-        //    }
-
-        //    _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
-        //    if (_animationBlend < 0.01f) _animationBlend = 0f;
-
-        //    // normalise input direction
-        //    Vector3 inputDirection = new Vector3(inputMove.x, 0.0f, inputMove.y).normalized;
-
-        //    // if there is a move input rotate player when the player is moving
-        //    if (inputMove != Vector2.zero)
-        //    {
-        //        _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-        //                          _mainCamera.transform.eulerAngles.y;
-        //        float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
-        //            RotationSmoothTime);
-
-        //        // rotate to face input direction relative to camera position
-        //        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-        //    }
-
-        //    Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
-        //    // move the player
-        //    _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-        //                     new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-
-        //    // update animator if using character
-        //    if (_animator)
-        //    {
-        //        _animator.SetFloat(_animIDSpeed, _animationBlend);
-        //        _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-        //    }
-        //}
-
         private void JumpAndGravity()
         {
-            if (Grounded)
+            if (playerControllerPublicProperties.Grounded)
             {
                 // reset the fall timeout timer
-                _fallTimeoutDelta = FallTimeout;
+                _fallTimeoutDelta = playerControllerPublicProperties.FallTimeout;
 
                 // update animator if using character
                 if (_animator)
@@ -720,7 +640,7 @@ namespace RavanaGame
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    _verticalVelocity = Mathf.Sqrt(playerControllerPublicProperties.JumpHeight * -2f * playerControllerPublicProperties.Gravity);
 
                     // update animator if using character
                     if (_animator)
@@ -738,7 +658,7 @@ namespace RavanaGame
             else
             {
                 // reset the jump timeout timer
-                _jumpTimeoutDelta = JumpTimeout;
+                _jumpTimeoutDelta = playerControllerPublicProperties.JumpTimeout;
 
                 // fall timeout
                 if (_fallTimeoutDelta >= 0.0f)
@@ -761,7 +681,7 @@ namespace RavanaGame
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
             if (_verticalVelocity < _terminalVelocity)
             {
-                _verticalVelocity += Gravity * Time.deltaTime;
+                _verticalVelocity += playerControllerPublicProperties.Gravity * Time.deltaTime;
             }
         }
 
@@ -777,24 +697,24 @@ namespace RavanaGame
             Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
             Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
-            if (Grounded) Gizmos.color = transparentGreen;
+            if (playerControllerPublicProperties.Grounded) Gizmos.color = transparentGreen;
             else Gizmos.color = transparentRed;
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(
-                new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-                GroundedRadius);
+                new Vector3(transform.position.x, transform.position.y - playerControllerPublicProperties.GroundedOffset, transform.position.z),
+                playerControllerPublicProperties.GroundedRadius);
         }
 
         private void OnFootstep(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f && canMove)
             {
-                if (FootstepAudioClips.Length > 0)
+                if (playerControllerPublicProperties.FootstepAudioClips.Length > 0)
                 {
-                    var index = UnityEngine.Random.Range(0, FootstepAudioClips.Length);
+                    var index = UnityEngine.Random.Range(0, playerControllerPublicProperties.FootstepAudioClips.Length);
                     // AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
-                    audioSource.PlayOneShot(FootstepAudioClips[index], FootstepAudioVolume);
+                    audioSource.PlayOneShot(playerControllerPublicProperties.FootstepAudioClips[index], playerControllerPublicProperties.FootstepAudioVolume);
                 }
             }
             //if (!canMove)
@@ -808,7 +728,7 @@ namespace RavanaGame
             if (animationEvent.animatorClipInfo.weight > 0.5f)
             {
                 // AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
-                audioSource.PlayOneShot(LandingAudioClip, FootstepAudioVolume);
+                audioSource.PlayOneShot(playerControllerPublicProperties.LandingAudioClip, playerControllerPublicProperties.FootstepAudioVolume);
             }
         }
 

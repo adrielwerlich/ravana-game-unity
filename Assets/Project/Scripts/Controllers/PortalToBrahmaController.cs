@@ -17,7 +17,7 @@ public class PortalToBrahmaController : MonoBehaviour
         .Where(go => go.name.Contains("CustomMonster"))
         .ToArray();
 
-        Debug.Log("Monsters: " + monsters.Length);
+        // Debug.Log("Monsters: " + monsters.Length);
 
         plataform = this.gameObject.transform.Find("PortalContainer").gameObject;
         plataform.SetActive(false);
